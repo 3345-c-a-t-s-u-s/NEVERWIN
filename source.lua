@@ -22,16 +22,16 @@ end
 local function scrolling_connect(scrollframe:ScrollingFrame)
 	local UIListLayout:UIListLayout = scrollframe:WaitForChild('UIListLayout',9999999)
 	scrollframe.CanvasSize=UDim2.new(0,0,0,UIListLayout.AbsoluteContentSize.Y)
-	
+
 	UIListLayout:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
 		scrollframe.CanvasSize=UDim2.new(0,0,0,UIListLayout.AbsoluteContentSize.Y)
 	end)
 end
 
-function NEVERWIN:AddWindow(WindowNameString,Title_str)
+function NEVERWIN:AddWindow(WindowNameString,Title_str,confix_size)
 	local WindowFunctinos={}
 	local ToggleUI=false
-	local ooldsize=UDim2.new(0.200000003, 200, 0.200000003, 175)
+	local ooldsize=confix_size or UDim2.new(0.200000003, 200, 0.200000003, 175)
 	local Tabs={}
 	local ScreenGui = Instance.new("ScreenGui")
 	local Window = Instance.new("Frame")
@@ -47,7 +47,7 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 	local WindowName = Instance.new("TextLabel")
 	local TabButtons = Instance.new("ScrollingFrame")
 	local UIListLayout = Instance.new("UIListLayout")
-	
+
 	if Title_str then
 		local Title = Instance.new("TextLabel")
 
@@ -72,13 +72,13 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 		Title.TextXAlignment = Enum.TextXAlignment.Left
 
 	end
-	
+
 	ScreenGui.Parent = CoreGui
 	ScreenGui.ResetOnSpawn = false
 	ScreenGui.IgnoreGuiInset = true
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
 	ProtectGui(ScreenGui)
-	
+
 	Window.Name = "Window"
 	Window.Parent = ScreenGui
 	Window.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -205,9 +205,9 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 	UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	UIListLayout.Padding = UDim.new(0, 2)
-	
+
 	scrolling_connect(TabButtons)
-	
+
 	function WindowFunctinos:AddTabLabel(NAME)
 		local TabLabel = Instance.new("TextLabel")
 		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
@@ -231,19 +231,19 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 		UIAspectRatioConstraint.Parent = TabLabel
 		UIAspectRatioConstraint.AspectRatio = 8.000
 		UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
-		
+
 		local llr={}
-		
+
 		function llr:Text(a)
 			TabLabel.Text = a or "Tab Label"
 		end
-		
+
 		return llr
 	end
-	
+
 	function WindowFunctinos:AddTab(TAB_NAME,icon)
 		local TabAssets={}
-		
+
 		local TabButton = Instance.new("Frame")
 		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 		local UICorner = Instance.new("UICorner")
@@ -300,7 +300,7 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 		TextLabel.TextSize = 14.000
 		TextLabel.TextWrapped = true
 		TextLabel.TextXAlignment = Enum.TextXAlignment.Left
-		
+
 		local Tab = Instance.new("Frame")
 		local Left = Instance.new("ScrollingFrame")
 		local UIListLayout = Instance.new("UIListLayout")
@@ -346,15 +346,15 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 		Right.ZIndex = 5
 		Right.ScrollBarThickness = 1
 		Right.ScrollBarImageColor3=Color3.fromRGB(18, 55, 97)
-		
+
 		UIListLayout_2.Parent = Right
 		UIListLayout_2.HorizontalAlignment = Enum.HorizontalAlignment.Center
 		UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
 		UIListLayout_2.Padding = UDim.new(0, 2)
-		
+
 		scrolling_connect(Right)
 		scrolling_connect(Left)
-		
+
 		local function tabcallback(va)
 			if va then
 				TweenService:Create(TabButton,TweenInfo.new(0.1),{BackgroundTransparency=0}):Play()
@@ -364,15 +364,15 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 				Tab.Visible=false
 			end
 		end
-		
+
 		if #Tabs==0 then
 			tabcallback(true)
 		else
 			tabcallback(false)
 		end
-		
+
 		table.insert(Tabs,{Tab,tabcallback})
-		
+
 		cretate_button(TabButton).MouseButton1Click:Connect(function()
 			for i,v in ipairs(Tabs) do
 				if v[1]==Tab then
@@ -382,15 +382,15 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 				end
 			end
 		end)
-		
+
 		function TabAssets:AddSection(SectionNameString,int)
 			int=int or 'left'
-			
+
 			local sectionasaste={}
 			int=tostring(int):lower()
-			
+
 			local prosate=(int=="left"and Left)or(int=="right"and Right)
-			
+
 			local Section = Instance.new("Frame")
 			local UICorner = Instance.new("UICorner")
 			local UIListLayout = Instance.new("UIListLayout")
@@ -478,21 +478,21 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 
 			UICorner_2.CornerRadius = UDim.new(1, 0)
 			UICorner_2.Parent = Main
-			
+
 			local function UpdateSize()
 				local a=0
-				
+
 				for i,v:Frame in ipairs(Section:GetChildren()) do
 					if v:isA('TextLabel')or v:isA('Frame') then
 						a=a+v.AbsoluteSize.Y-1
 					end
 				end
-				
+
 				Section.Size=UDim2.new(0.959999979, 0, 0, 25+a)
 			end
-			
+
 			UpdateSize()
-			
+
 			function sectionasaste:AddLabel(LabelName)
 				local Label = Instance.new("TextLabel")
 				local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
@@ -516,29 +516,29 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 				Label.TextWrapped = true
 				Label.TextXAlignment = Enum.TextXAlignment.Left
 				Label.Text=LabelName or ""
-				
+
 				UIAspectRatioConstraint.Parent = Label
 				UIAspectRatioConstraint.AspectRatio = 10.000
 				UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
-				
+
 				UpdateSize()
-				
+
 				local func={}
-				
+
 				function func:Text(a)
 					Label.Text=tostring(a)
 				end
-				
+
 				return func
-					
+
 			end
-			
+
 			function sectionasaste:AddToggle(ToggleName,Default,callback)
 				Default=Default or false
 				callback=callback or function ()
-					
+
 				end
-				
+
 				local Toggle = Instance.new("Frame")
 				local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 				local Title = Instance.new("TextLabel")
@@ -602,7 +602,7 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 
 				UICorner_2.CornerRadius = UDim.new(3, 0)
 				UICorner_2.Parent = Frame
-				
+
 				local function toggle__(val)
 					if val then
 						TweenService:Create(Icon,TweenInfo.new(0.1),{Position=UDim2.new(0.75,0,0.5,0),BackgroundColor3=Color3.fromRGB( 4,186, 252)}):Play()
@@ -614,40 +614,40 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 						TweenService:Create(Frame,TweenInfo.new(0.1),{BackgroundColor3=Color3.fromRGB(0, 30, 71)}):Play()
 					end
 				end
-				
+
 				toggle__(Default)
-				
+
 				cretate_button(Toggle).MouseButton1Click:Connect(function()
 					Default=not Default
 					toggle__(Default)
 					callback(Default)
 				end)
-				
+
 				UpdateSize()
-				
+
 				local func={}
-				
+
 				function func:Value(a)
 					Default=a
 					toggle__(Default)
 					callback(a)
 				end
-				
+
 				function func:Text(a)
 					Title.Text=tostring(a)
 				end
-				
+
 				return func
 			end
-			
+
 			function sectionasaste:AddSlider(SliderNameString,Min,Max,Default,callback)
 				Min=Min or 1
 				Max=Max or 100
 				Default=Default or Min
 				callback=callback or function()
-					
+
 				end
-				
+
 				local Slider = Instance.new("Frame")
 				local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 				local Title = Instance.new("TextLabel")
@@ -746,10 +746,10 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 
 				UICorner_2.CornerRadius = UDim.new(0, 5)
 				UICorner_2.Parent = ValueText
-				
+
 				ValueText.Text = tostring(Default)
 				Icon.Size=UDim2.fromScale((Default/Max),1)
-				
+
 				local touching = Instance.new("Frame")
 
 				touching.Name = "touching"
@@ -763,7 +763,7 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 				touching.ZIndex = 11
 				touching.BackgroundTransparency=1
 				local danger = false
-				
+
 				local function update(Input)
 					local SizeScale = math.clamp(((Input.Position.X - Main.AbsolutePosition.X) / Main.AbsoluteSize.X), 0, 1)
 					local Valuea = math.floor(((Max - Min) * SizeScale) + Min)
@@ -772,7 +772,7 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 					TweenService:Create(Icon,TweenInfo.new(0.1),{Size = Size}):Play()
 					callback(Valuea)
 				end
-				
+
 				touching.InputBegan:Connect(function(Input)
 					if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
 						danger = true
@@ -787,7 +787,7 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 						TweenService:Create(Title,TweenInfo.new(0.1),{TextTransparency=0.3}):Play()
 					end
 				end)
-				
+
 				InputService.InputChanged:Connect(function(Input)
 					if danger then
 						if (Input.UserInputType==Enum.UserInputType.MouseMovement or Input.UserInputType==Enum.UserInputType.Touch)  then
@@ -795,31 +795,31 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 						end
 					end
 				end)
-				
+
 				local func={}
-				
+
 				function func:Value(s)
 					ValueText.Text = tostring(s)
 					Icon.Size=UDim2.fromScale((s/Max),1)
-					
+
 					callback(s)
 				end
-				
+
 				function func:Text(t)
 					Title.Text=tostring(t)
 				end
-				
+
 				UpdateSize()
 				return func
 			end
-			
+
 			function sectionasaste:AddDropdown(DropdownNameString,data,default,callback)
 				data=data or {}
 				default=default or data[1]
 				callback=callback or function()
 
 				end
-				
+
 				local choose=default
 				local Dropdown = Instance.new("Frame")
 				local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
@@ -929,19 +929,19 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 				UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 				UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 				UIListLayout.Padding = UDim.new(0, 1)
-				
+
 				local function get_list_size()
 					local a=0
-					
+
 					for i,v:TextButton in ipairs(ListBox:GetChildren()) do
 						if v:isA('TextButton') then
 							a=a + 8.29
 						end
 					end
-					
+
 					return a + 8
 				end
-				
+
 				ListBox:GetPropertyChangedSignal('Size'):Connect(function()
 					if ListBox.Size~=UDim2.new(0.339,0,0) then
 						ListBox.Visible=true
@@ -949,33 +949,33 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 						ListBox.Visible=false
 					end
 				end)
-				
+
 				local function dropdnw_toggle(val)
 					if val then
 						TweenService:Create(DotText,TweenInfo.new(0.15),{Rotation=90}):Play()
 						TweenService:Create(Title,TweenInfo.new(0.4),{TextTransparency=0}):Play()
-						
+
 						TweenService:Create(ListBox,TweenInfo.new(0.1),{Size=UDim2.new(0.339,0,0,get_list_size())}):Play()
 					else
 						TweenService:Create(DotText,TweenInfo.new(0.15),{Rotation=-90}):Play()
 						TweenService:Create(Title,TweenInfo.new(0.4),{TextTransparency=.3}):Play()
-						
+
 						TweenService:Create(ListBox,TweenInfo.new(0.1),{Size=UDim2.new(0.339,0,0)}):Play()
 					end
 				end
-				
+
 				local ttg=false
-				
+
 				dropdnw_toggle(ttg)
-				
+
 				cretate_button(__BOX__).MouseButton1Click:Connect(function()
 					ttg=not ttg
 					dropdnw_toggle(ttg)
 					UpdateSize()
 				end)
-				
+
 				UpdateSize()
-				
+
 				local function newbutton()
 					local ButtonFB = Instance.new("TextButton",ListBox)
 					local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
@@ -994,29 +994,29 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 					ButtonFB.TextSize = 14.000
 					ButtonFB.TextWrapped = true
 					ButtonFB.TextTransparency=.3
-					
+
 					ButtonFB.MouseEnter:Connect(function()
 						TweenService:Create(ButtonFB,TweenInfo.new(0.1),{TextTransparency=0}):Play()
 					end)
-					
+
 					ButtonFB.MouseLeave:Connect(function()
 						TweenService:Create(ButtonFB,TweenInfo.new(0.1),{TextTransparency=0.3}):Play()
 					end)
-					
+
 					UIAspectRatioConstraint.Parent = ButtonFB
 					UIAspectRatioConstraint.AspectRatio = 5.000
 					UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
-					
+
 					return ButtonFB
 				end
-				
+
 				local function maindb()
 					for i,v:TextButton in ipairs(ListBox:GetChildren()) do
 						if v:isA('TextButton') then
 							v:Destroy()
 						end
 					end
-					
+
 					for i,v in ipairs(data) do
 						local button=newbutton()
 						button.Text=tostring(v)
@@ -1024,39 +1024,39 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 							ValueText.Text=tostring(v)
 							callback(v)
 						end)
-						
+
 					end
-					
+
 					if ListBox.Visible then
 						TweenService:Create(ListBox,TweenInfo.new(0.1),{Size=UDim2.new(0.339,0,0,get_list_size())}):Play()
 					end
 				end
-				
+
 				maindb()
-				
+
 				local func={}
-				
+
 				function func:Refresh(new)
 					data=new or data
 					maindb()
 				end
-				
+
 				function func:Text(a)
 					Title.Text=tostring(a)
 				end
-				
+
 				function func:Get()
 					return choose
 				end
 				return func
 			end
-			
+
 			function sectionasaste:AddButton(ButtonNamestr,callback)
 				callback=callback or function()
-					
+
 				end
-				
-				
+
+
 				local Button = Instance.new("TextLabel")
 				local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 				local UIStroke = Instance.new("UIStroke")
@@ -1089,43 +1089,43 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 
 				UICorner.CornerRadius = UDim.new(0, 2)
 				UICorner.Parent = Button
-				
+
 				local as = cretate_button(Button)
 				as.ZIndex=7
 				as.MouseButton1Click:Connect(function()
 					callback()
 				end)
-				
+
 				as.MouseEnter:Connect(function()
 					TweenService:Create(Button,TweenInfo.new(0.2),{TextTransparency=0}):Play()
 				end)
-				
+
 				as.MouseLeave:Connect(function()
 					TweenService:Create(Button,TweenInfo.new(0.2),{TextTransparency=.3}):Play()
 				end)
 				TweenService:Create(Button,TweenInfo.new(0.2),{TextTransparency=.3}):Play()
-				
+
 				UpdateSize()
-				
+
 				local func={}
-				
+
 				function func:Text(a)
 					Title.Text=tostring(a)
 				end
-				
+
 				function func:Fire()
 					callback()
 				end
-				
+
 				return func
 			end
-			
+
 			return sectionasaste
 		end
-		
+
 		return TabAssets
 	end
-	
+
 	local Movebar = Instance.new("Frame")
 
 	Movebar.Name = "Movebar"
@@ -1136,7 +1136,7 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 	Movebar.BorderSizePixel = 0
 	Movebar.Size = UDim2.new(1, 0, 0.100000001, 0)
 	Movebar.ZIndex = 222
-	
+
 	local dragToggle = nil
 	local dragSpeed = 0.1
 	local dragStart = nil
@@ -1169,7 +1169,7 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str)
 			end
 		end
 	end)
-	
+
 	return WindowFunctinos
 end
 
