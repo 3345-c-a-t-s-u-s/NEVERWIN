@@ -3,7 +3,7 @@
 
 ## Example
 ```lua
-local NEVERWIN = loadstring(game:HttpGet("https://raw.githubusercontent.com/3345-c-a-t-s-u-s/NEVERWIN/main/source.lua")()
+local NEVERWIN = loadstring(game:HttpGet("https://raw.githubusercontent.com/3345-c-a-t-s-u-s/NEVERWIN/main/source.lua"))()
 
 local Window = NEVERWIN:AddWindow("NEVERWIN","MAKE BY CAT_SUS")
 
