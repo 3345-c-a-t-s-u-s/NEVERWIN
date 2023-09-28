@@ -1119,7 +1119,8 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str,confix_size)
 
 				return func
 			end
-
+			
+			UpdateSize()
 			return sectionasaste
 		end
 
