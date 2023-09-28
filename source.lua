@@ -87,7 +87,7 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str,confix_size)
 	Window.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	Window.BorderSizePixel = 0
 	Window.Position = UDim2.new(0.5, 0, 0.5, 0)
-	Window.Size = ooldsize
+	Window.Size = UDim2.new(0,0,0,0)
 	Window.Active=true
 	UICorner.CornerRadius = UDim.new(0, 5)
 	UICorner.Parent = Window
@@ -1169,7 +1169,8 @@ function NEVERWIN:AddWindow(WindowNameString,Title_str,confix_size)
 			end
 		end
 	end)
-
+	
+	TweenService:Create(Window,TweenInfo.new(1.2,Enum.EasingStyle.Quint),{Size = ooldsize}):Play()
 	return WindowFunctinos
 end
 
