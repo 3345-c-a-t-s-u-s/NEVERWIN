@@ -1,7 +1,3 @@
-# NEVERWIN
-![Screenshot 2023-09-26 181727](https://github.com/3345-c-a-t-s-u-s/NEVERWIN/assets/117000269/0e0d5e5b-83ca-49da-9888-a0d8c0a26c7e)
-
-## Example
 ```lua
 local NEVERWIN = loadstring(game:HttpGet("https://raw.githubusercontent.com/3345-c-a-t-s-u-s/NEVERWIN/main/source.lua"))()
 
